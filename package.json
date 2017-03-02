@@ -24,9 +24,9 @@
   "dependencies": {
     "adm-zip": "^0.4.7",
     "babel-core": "^6.14.0",
-    "babel-polyfill": "^6.13.0",
     "babel-preset-es2015-node5": "^1.2.0",
     "babel-preset-stage-0": "^6.5.0",
+    "babel-runtime": "^6.23.0",
     "body-parser": "^1.16.1",
     "c0nfig": "^0.2.2",
     "compression": "^1.6.2",

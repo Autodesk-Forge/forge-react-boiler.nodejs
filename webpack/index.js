@@ -1,6 +1,4 @@
 const webpackCompiler = require('./webpack-compiler')
-const debug = require('debug')('app:bin:compile')
-const config = require('c0nfig')
 
 const build = () => {
 
@@ -11,7 +9,7 @@ const build = () => {
   const webpackConfig = require(`./${env}.webpack.config`)
 
   return Promise.resolve()
-    .then(() => webpackCompiler(webpackConfig, webpackConfig.stats))
+    .then(() => webpackCompiler(webpackConfig))
     .then(() => {
 
       console.log('Compilation completed successfully.')

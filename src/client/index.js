@@ -6,7 +6,6 @@ import config from 'c0nfig'
 import 'bootstrap-loader'
 //import 'bootstrap-webpack'
 import React from 'react'
-import 'babel-polyfill'
 
 //Services
 import ServiceManager from 'SvcManager'

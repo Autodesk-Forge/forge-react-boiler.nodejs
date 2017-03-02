@@ -1,6 +1,6 @@
 const webpack = require('webpack')
 
-function webpackCompiler (webpackConfig, statsFormat) {
+function webpackCompiler (webpackConfig) {
 
   return new Promise((resolve, reject) => {
 
@@ -16,24 +16,7 @@ function webpackCompiler (webpackConfig, statsFormat) {
 
       const jsonStats = stats.toJson()
 
-      console.log(stats.toString(statsFormat))
-
-      //if (jsonStats.errors.length > 0) {
-      //
-      //  console.log('Webpack compiler encountered errors.')
-      //  console.log(jsonStats.errors.join('\n'))
-      //
-      //  return reject(new Error('Webpack compiler encountered errors'))
-      //
-      //} else if (jsonStats.warnings.length > 0) {
-      //
-      //  console.log('Webpack compiler encountered warnings.')
-      //  console.log(jsonStats.warnings.join('\n'))
-      //
-      //} else {
-      //
-      //  console.log('No errors or warnings encountered.')
-      //}
+      console.log(stats.toString(webpackConfig.stats))
 
       resolve(jsonStats)
     })
