@@ -41,7 +41,7 @@ export default class AboutDlg extends React.Component {
             <b>About Forge React Boiler ...</b>
           </div>
 
-          <div className="content ">
+          <div className="content">
              <div>
                Written by Philippe Leefsma
                <br/>
@@ -58,7 +58,6 @@ export default class AboutDlg extends React.Component {
                </a>
              </div>
           </div>
-
         </Modal>
       </div>
     )

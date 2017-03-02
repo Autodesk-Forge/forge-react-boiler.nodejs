@@ -3,6 +3,27 @@
   z-index: 10;
 }
 
+.ReactModal__Overlay {
+  transition-property: opacity;
+  transition-duration: 1s;
+  opacity: 0;
+}
+
+.ReactModal__Overlay--after-open {
+  opacity: 1;
+}
+
+.ReactModal__Content {
+  transition-property: opacity;
+  transition-duration: 1s;
+  outline: none;
+  opacity: 0;
+}
+
+.ReactModal__Content--after-open {
+  opacity: 1;
+}
+
 .dialog {
   border: 1px solid #b3b3b3;
   background-color: #f6f6f6;

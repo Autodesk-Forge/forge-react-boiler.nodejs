@@ -73,9 +73,18 @@ If you want to load a model from **Autodesk Cloud**, you first need to generate 
 Using the same Forge ClientId & ClientSecret used to upload the model,
 populate environment variables used by the config files (in **/config**):
 
-**FORGE_DEV_CLIENT_ID** & **FORGE_DEV_CLIENT_SECRET** for development
+  * development:
 
-**FORGE_CLIENT_ID** & **FORGE_CLIENT_SECRET** for production
+    `FORGE_DEV_CLIENT_ID`
+
+    `FORGE_DEV_CLIENT_SECRET`
+
+  * production:
+
+    `FORGE_CLIENT_ID`
+
+    `FORGE_CLIENT_SECRET`
+
 
 Restart the server, you can then directly load your model by specifying design **URN** as query parameter in the url of the viewer page:
 
