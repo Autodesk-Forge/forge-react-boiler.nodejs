@@ -157,15 +157,11 @@ module.exports = {
 
   resolve: {
     modules: [
-      path.resolve('./src/client'),
-      path.resolve('./node_modules'),
-      path.resolve('./src/client/styles'),
-      path.resolve('./src/client/services'),
       path.resolve('./src/client/components'),
-      path.resolve('./src/client/components/UIComponents'),
-      path.resolve('./src/client/components/Viewer.components'),
-      path.resolve('./src/client/components/Viewer.components/Viewer.Commands'),
-      path.resolve('./src/client/components/Viewer.components/Viewer.Extensions')
+      path.resolve('./src/client/services'),
+      path.resolve('./src/client/styles'),
+      path.resolve('./node_modules'),
+      path.resolve('./src/client')
     ],
     extensions : ['.js', '.jsx', '.json']
   },

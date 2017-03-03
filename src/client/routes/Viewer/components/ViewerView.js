@@ -55,14 +55,14 @@ class ViewerView extends React.Component {
    }
 
    /////////////////////////////////////////////////////////
-   // Return default viewable path: first 3d or 2d item
+   // Return viewable path: first 3d or 2d item by default
    //
    /////////////////////////////////////////////////////////
-   getDefaultViewablePath (doc, roles = ['3d', '2d']) {
+   getViewablePath (doc, pathIdx = 0, roles = ['3d', '2d']) {
 
-      var rootItem = doc.getRootItem()
+      const rootItem = doc.getRootItem()
 
-      let roleArray = [...roles]
+      const roleArray = [...roles]
 
       let items = []
 
@@ -73,7 +73,12 @@ class ViewerView extends React.Component {
             rootItem, { type: 'geometry', role }, true) ]
       })
 
-      return items.length ? doc.getViewablePath(items[0]) : null
+      if (!items.length || pathIdx > items.length) {
+
+        return null
+      }
+
+      return doc.getViewablePath(items[pathIdx])
    }
 
    /////////////////////////////////////////////////////////
@@ -85,56 +90,19 @@ class ViewerView extends React.Component {
 
       try {
 
-        let { id, urn, path } = this.props.location.query
+        let { id, urn, path, pathIdx } = this.props.location.query
+
+        // check if env is initialized
+        // initializer cannot be invoked more than once
 
         if (!this.props.appState.viewerEnv) {
 
-          const env = id ? 'id'
-            : urn ? 'AutodeskProduction'
-            : path ? 'Local' : 'invalid'
+          await this.initialize({
+            env: 'AutodeskProduction',
+            useConsolidation: true
+          })
 
-          switch (env) {
-
-            case 'id':
-
-              // load by database id lookup
-              // !NOT IMPLEMENTED HERE
-              // could be something like:
-              // const dbModel = getDBModelBy(id)
-              // urn = dbModel.urn
-
-              return
-
-            case 'AutodeskProduction':
-
-              await this.initialize({
-                env: 'AutodeskProduction',
-                useConsolidation: true
-              })
-
-              break
-
-            case 'Local':
-
-              await this.initialize({
-                useConsolidation: true,
-                env: 'Local'
-              })
-
-              break
-
-            case 'invalid':
-            default:
-
-              const error =
-                'Invalid query parameter: ' +
-                'use id OR urn OR path in url'
-
-              throw new Error(error)
-              return
-          }
-
-          this.props.setViewerEnv(env)
+          this.props.setViewerEnv('AutodeskProduction')
 
           if (Autodesk.Viewing.setApiEndpoint) {
 
@@ -148,6 +116,13 @@ class ViewerView extends React.Component {
             Autodesk.Viewing.setEndpointAndApi(
               window.location.origin + '/lmv-proxy',
               'modelDerivativeV2')
+
+          } else {
+
+            const error = 'Proxy API not found. ' +
+              'Requires viewer version >= 2.13'
+
+            throw new Error(error)
           }
 
           Autodesk.Viewing.Private.memoryOptimizedSvfLoading = true
@@ -155,16 +130,33 @@ class ViewerView extends React.Component {
           //Autodesk.Viewing.Private.logger.setLevel(0)
         }
 
-        this.viewer = new Autodesk.Viewing.Private.GuiViewer3D(
-          this.viewerContainer)
+        if (id) {
+
+          // load by database id lookup
+          // !NOT IMPLEMENTED HERE
+          // could be something like:
+          // const dbModel = getDBModelBy(id)
+          // urn = dbModel.urn
+
+        } else if (urn) {
+
+          const doc = await this.loadDocument (urn)
+
+          path = this.getViewablePath (doc, pathIdx || 0)
+
+        } else if (!path) {
+
+          const error = 'Invalid query parameter: ' +
+            'use id OR urn OR path in url'
+
+          throw new Error(error)
+        }
+
+        this.viewer =
+          new Autodesk.Viewing.Private.GuiViewer3D(
+            this.viewerContainer)
 
         this.viewer.start()
-
-        if (!path) {
-
-          const doc = await this.loadDocument(urn)
-          path = this.getDefaultViewablePath(doc)
-        }
 
         this.viewer.loadModel(path)
 
