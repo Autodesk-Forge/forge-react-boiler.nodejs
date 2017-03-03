@@ -7,15 +7,10 @@ const chalk = require('chalk')
 const path = require('path')
 
 ///////////////////////////////////////////////////////////
-// Trace deprecation warnings
-//
-///////////////////////////////////////////////////////////
-//process.traceDeprecation = true
-
-///////////////////////////////////////////////////////////
 // Silence deprecation warnings
 //
 ///////////////////////////////////////////////////////////
+//process.traceDeprecation = true
 process.noDeprecation = true
 
 ///////////////////////////////////////////////////////////
@@ -31,12 +26,6 @@ module.exports = {
   entry: {
     app: [
       path.resolve('./src/client/index.js')
-    ],
-    vendor: [
-      'react-router',
-      'react-redux',
-      'react',
-      'redux'
     ]
   },
 
@@ -93,10 +82,16 @@ module.exports = {
 
   plugins: [
 
-    new webpack.optimize.OccurrenceOrderPlugin(),
-
     new webpack.LoaderOptionsPlugin({
       debug: false
+    }),
+
+    new webpack.optimize.OccurrenceOrderPlugin(),
+
+    new webpack.optimize.CommonsChunkPlugin({
+      filename: 'commons.js',
+      name: 'commons',
+      minChunks: 2
     }),
 
     new webpack.optimize.UglifyJsPlugin({
