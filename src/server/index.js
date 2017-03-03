@@ -1,6 +1,3 @@
-// async support
-import 'babel-polyfill'
-
 //Server stuff
 import cookieParser from 'cookie-parser'
 import compression from 'compression'
