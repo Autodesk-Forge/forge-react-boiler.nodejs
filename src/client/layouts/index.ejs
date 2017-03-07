@@ -16,7 +16,7 @@
 // UNINTERRUPTED OR ERROR FREE.
 ////////////////////////////////////////////////////////////////////////////////-->
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 
 <head>
   <meta name="viewport" content="width=device-width, height=device-height, minimal-ui, minimum-scale=1.0, initial-scale=1, user-scalable=no"/>
@@ -30,6 +30,7 @@
 <body>
   <script src="<%=htmlWebpackPlugin.options.threeJS%>"></script>
   <script src="<%=htmlWebpackPlugin.options.viewer3D%>"></script>
+  <%=htmlWebpackPlugin.files.webpackManifest%>
   <div id="root"></div>
 </body>
 

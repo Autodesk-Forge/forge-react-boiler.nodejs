@@ -3,8 +3,7 @@ import createStore from './store/createStore'
 import ReactDOM from 'react-dom'
 import 'font-awesome-webpack'
 import config from 'c0nfig'
-import 'bootstrap-loader'
-//import 'bootstrap-webpack'
+import 'bootstrap-webpack'
 import React from 'react'
 
 //Services

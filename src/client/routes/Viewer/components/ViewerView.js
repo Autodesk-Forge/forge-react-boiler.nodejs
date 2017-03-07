@@ -1,3 +1,4 @@
+import Viewer from 'Viewer'
 import './ViewerView.scss'
 import React from 'react'
 
@@ -82,11 +83,10 @@ class ViewerView extends React.Component {
    }
 
    /////////////////////////////////////////////////////////
-   // Component has been mounted so this div is now created
-   // in the DOM and viewer can be instantiated
+   //
    //
    /////////////////////////////////////////////////////////
-   async  componentDidMount () {
+   async onViewerCreated (viewer) {
 
       try {
 
@@ -152,36 +152,14 @@ class ViewerView extends React.Component {
           throw new Error(error)
         }
 
-        this.viewer =
-          new Autodesk.Viewing.Private.GuiViewer3D(
-            this.viewerContainer)
+        viewer.start()
 
-        this.viewer.start()
-
-        this.viewer.loadModel(path)
+        viewer.loadModel(path)
 
       } catch (ex) {
 
         console.log('Viewer Initialization Error: ')
         console.log(ex)
-      }
-   }
-
-   /////////////////////////////////////////////////////////
-   // Component will unmount so we can destroy
-   // the viewer to avoid memory leaks
-   //
-   /////////////////////////////////////////////////////////
-   componentWillUnmount () {
-
-      if (this.viewer) {
-
-        if(this.viewer.impl.selector) {
-
-          this.viewer.tearDown()
-          this.viewer.finish()
-          this.viewer = null
-        }
       }
    }
 
@@ -193,10 +171,10 @@ class ViewerView extends React.Component {
 
       return (
         <div className="viewer-view">
-          <div className="viewer" ref={
-            (div) => this.viewerContainer = div
-          }>
-          </div>
+          <Viewer onViewerCreated={(viewer => {
+              this.onViewerCreated(viewer)
+            })}
+          />
         </div>
       )
    }

@@ -1,6 +1,9 @@
+const InlineManifestWebpackPlugin = require('inline-manifest-webpack-plugin')
 const ProgressBarPlugin = require('progress-bar-webpack-plugin')
+const ManifestPlugin = require('webpack-manifest-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const OptimizeJsPlugin = require('optimize-js-plugin')
+const WebpackMd5Hash = require('webpack-md5-hash')
 const webpack = require('webpack')
 const config = require('c0nfig')
 const chalk = require('chalk')
@@ -8,6 +11,7 @@ const path = require('path')
 
 ///////////////////////////////////////////////////////////
 // Silence deprecation warnings
+// (caused by deprecated API used by webpack loaders)
 //
 ///////////////////////////////////////////////////////////
 //process.traceDeprecation = true
@@ -24,6 +28,13 @@ module.exports = {
   context: path.join(__dirname, '..'),
 
   entry: {
+    vendor: [
+      'react-bootstrap',
+      'react-redux',
+      'jquery',
+      'redux',
+      'react',
+    ],
     app: [
       path.resolve('./src/client/index.js')
     ]
@@ -31,7 +42,8 @@ module.exports = {
 
   output: {
     path: path.resolve(__dirname, '../dist'),
-    filename: "[name].min.js",
+    chunkFilename: "[name].[chunkhash].min.js",
+    filename: "[name].[chunkhash].min.js",
     publicPath: '/'
   },
 
@@ -89,9 +101,16 @@ module.exports = {
     new webpack.optimize.OccurrenceOrderPlugin(),
 
     new webpack.optimize.CommonsChunkPlugin({
-      filename: 'commons.js',
-      name: 'commons',
-      minChunks: 2
+      names: ['vendor', 'manifest'],
+      minChunks: Infinity
+    }),
+
+    new WebpackMd5Hash(),
+
+    new ManifestPlugin(),
+
+    new InlineManifestWebpackPlugin({
+      name: 'webpackManifest'
     }),
 
     new webpack.optimize.UglifyJsPlugin({
@@ -112,6 +131,13 @@ module.exports = {
       }
     }),
 
+    new webpack.ProvidePlugin({
+      'window.jQuery': 'jquery',
+      jQuery: 'jquery',
+      _: 'lodash',
+      $: 'jquery'
+    }),
+
     new OptimizeJsPlugin({
       sourceMap: false
     }),
@@ -121,13 +147,6 @@ module.exports = {
         NODE_ENV: JSON.stringify('production'),
         WEBPACK: true
       }
-    }),
-
-    new webpack.ProvidePlugin({
-      'window.jQuery': 'jquery',
-      jQuery: 'jquery',
-      _: 'lodash',
-      $: 'jquery'
     }),
 
     new HtmlWebpackPlugin({
@@ -171,8 +190,6 @@ module.exports = {
   },
 
   module: {
-
-    noParse: [/systemjs/],
 
     rules: [
 
