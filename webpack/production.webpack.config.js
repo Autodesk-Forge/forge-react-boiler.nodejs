@@ -1,3 +1,9 @@
+///////////////////////////////////////////////////////////
+// Forge React Boiler Webpack production config
+// by Philippe Leefsma, 2016
+// https://twitter.com/F3lipek
+//
+///////////////////////////////////////////////////////////
 const InlineManifestWebpackPlugin = require('inline-manifest-webpack-plugin')
 const ProgressBarPlugin = require('progress-bar-webpack-plugin')
 const ManifestPlugin = require('webpack-manifest-plugin')
@@ -23,10 +29,16 @@ process.noDeprecation = true
 ///////////////////////////////////////////////////////////
 module.exports = {
 
+  // no dev tool, we are in Prod!
   devtool: false,
 
+  // it's good to specify context
   context: path.join(__dirname, '..'),
 
+  // entry arguments
+  // split up the bundles in 2:
+  // vendor is a so-called dll that will contains main node modules used by the app
+  // app is the App itself, but it will be split by webpack in multiple chunks
   entry: {
     vendor: [
       'react-bootstrap',
@@ -40,6 +52,10 @@ module.exports = {
     ]
   },
 
+  // output arguments
+  // it will append the [chunkhash] to each chunck
+  // in order to perform long-term caching:
+  // https://webpack.js.org/guides/caching/#components/sidebar/sidebar.jsx
   output: {
     path: path.resolve(__dirname, '../dist'),
     chunkFilename: "[name].[chunkhash].min.js",
@@ -47,6 +63,10 @@ module.exports = {
     publicPath: '/'
   },
 
+  // settings that control webpack compiler stats when building the app
+  // see description for each setting below
+  // straight from the doc:
+  // https://webpack.js.org/configuration/stats/#components/sidebar/sidebar.jsx
   stats: {
     // Add asset Information
     assets: true,
@@ -92,27 +112,39 @@ module.exports = {
     warnings: false
   },
 
+  // webpack pluging: perform code splitting, optiomization
+  // and html generation template from .ejs template
   plugins: [
 
+    // default options
     new webpack.LoaderOptionsPlugin({
+      minify: true,
       debug: false
     }),
 
+    // enabled by default
     new webpack.optimize.OccurrenceOrderPlugin(),
 
+    // generates chucks from all bundles
     new webpack.optimize.CommonsChunkPlugin({
       names: ['vendor', 'manifest'],
       minChunks: Infinity
     }),
 
+    // MD5 hash, see long-term caching for more details
+    // https://webpack.js.org/guides/caching/#components/sidebar/sidebar.jsx
     new WebpackMd5Hash(),
 
+    // generate webpack file manifest on disk
     new ManifestPlugin(),
 
+    // this will automatically embbed the chunck manifest in
+    // generated html output from HtmlWebpackPlugin
     new InlineManifestWebpackPlugin({
       name: 'webpackManifest'
     }),
 
+    // mangle and compress generated code
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         conditionals: true,
@@ -131,6 +163,7 @@ module.exports = {
       }
     }),
 
+    // provides some globals
     new webpack.ProvidePlugin({
       'window.jQuery': 'jquery',
       jQuery: 'jquery',
@@ -142,6 +175,7 @@ module.exports = {
       sourceMap: false
     }),
 
+    // define env variables during the build
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify('production'),
@@ -149,6 +183,7 @@ module.exports = {
       }
     }),
 
+    // outputs html from .ejs template
     new HtmlWebpackPlugin({
 
       viewer3D: config.forge.viewer.viewer3D,
@@ -168,12 +203,14 @@ module.exports = {
       inject: 'body'
     }),
 
+    // just a progress bar to make compilation less boring
     new ProgressBarPlugin({
       format: '  build [:bar] ' + chalk.green.bold(':percent') + ' (:elapsed seconds)',
       clear: false
     })
   ],
 
+  // directories used by webpack to resolve dependencies
   resolve: {
     modules: [
       path.resolve('./src/client/components'),
@@ -189,10 +226,13 @@ module.exports = {
     modules: ['node_modules']
   },
 
+  // compilation rules: i.e. loaders
   module: {
 
     rules: [
 
+      // all .js and .jsx code from the project goes through babel transpiler
+      // also enable stage-0 features for async/await support
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
@@ -205,6 +245,7 @@ module.exports = {
         }]
       },
 
+      // plain .css
       {
         test: /\.css$/,
         use: [{
@@ -224,6 +265,7 @@ module.exports = {
         }]
       },
 
+      //.sass and .scss
       {
         test: /\.(sass|scss)$/,
         use: [{
@@ -245,6 +287,7 @@ module.exports = {
         }]
       },
 
+      // bootstrap and font-awesome resources
       { test: /\.ttf(\?.*)?$/,   loader: 'url-loader?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=application/octet-stream' },
       { test: /\.woff2(\?.*)?$/, loader: 'url-loader?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=application/font-woff2' },
       { test: /\.woff(\?.*)?$/,  loader: 'url-loader?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=application/font-woff' },

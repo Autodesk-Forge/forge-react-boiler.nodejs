@@ -97,18 +97,18 @@ export default class DerivativeSvc extends BaseSvc {
   /////////////////////////////////////////////////////////////////
   deleteManifest (token, urn) {
 
-    return this._derivativesAPI.deleteManifest (
-      urn, {autoRefresh:false}, token)
+    //return this._derivativesAPI.deleteManifest (
+    //  urn, {autoRefresh:false}, token)
 
-    //var url = `${DerivativeSvc.SERVICE_BASE_URL}/designdata/` +
-    //  `${urn}/manifest`
-    //
-    //return requestAsync({
-    //  method: 'DELETE',
-    //  token: token,
-    //  json: false,
-    //  url: url
-    //})
+    var url = `${DerivativeSvc.SERVICE_BASE_URL}/designdata/` +
+      `${urn}/manifest`
+
+    return requestAsync({
+      method: 'DELETE',
+      token: token,
+      json: false,
+      url: url
+    })
   }
 
   /////////////////////////////////////////////////////////////////
@@ -259,7 +259,8 @@ function requestAsync(params) {
       url: params.url,
       method: params.method || 'GET',
       headers: {
-        'Authorization': 'Bearer ' + params.token
+        'Authorization':
+          'Bearer ' + params.token.access_token
       },
       json: params.json,
       body: params.body
