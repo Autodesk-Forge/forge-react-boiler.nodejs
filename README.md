@@ -104,9 +104,10 @@ Wait for a while once the Heroku App has been deployed as the client needs to be
 
 ## More about Autodesk Forge Platform and Web Applications of the future?
 
-Check it out at [https://developer.autodesk.com](https://developer.autodesk.com).
-Look at our [Quickstarts guide](https://developer.autodesk.com/en/docs/quickstarts/v1/overview/)
-to find the Forge SDK's for the programming language of your choice
+Check it out at [developer.autodesk.com](https://developer.autodesk.com).
+
+Look at our [Quickstarts Guide](https://developer.autodesk.com/en/docs/quickstarts/v1/overview/)
+to find the Forge SDK's for the programming language of your choice.
 
 ## About the Author
 
