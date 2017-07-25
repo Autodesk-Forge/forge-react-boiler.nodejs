@@ -11,15 +11,18 @@ import path from 'path'
 
 //Endpoints
 import DerivativesAPI from './api/endpoints/derivatives'
-import LMVProxy from './api/endpoints/lmv-proxy'
 import SocketAPI from './api/endpoints/socket'
 import ForgeAPI from './api/endpoints/forge'
 import OssAPI from './api/endpoints/oss'
+import DMAPI from './api/endpoints/dm'
 
 //Services
 import DerivativesSvc from './api/services/DerivativesSvc'
 import ServiceManager from './api/services/SvcManager'
+import ExtractorSvc from './api/services/ExtractorSvc'
+import LMVProxySvc from './api/services/LMVProxySvc'
 import SocketSvc from './api/services/SocketSvc'
+import UploadSvc from './api/services/UploadSvc'
 import ForgeSvc from './api/services/ForgeSvc'
 import OssSvc from './api/services/OssSvc'
 
@@ -32,6 +35,33 @@ import config from'c0nfig'
 /////////////////////////////////////////////////////////////////////
 const app = express()
 
+if (process.env.NODE_ENV === 'development') {
+
+  app.use(session({
+    secret: 'forge-boiler',
+    cookie: {
+      secure: false,
+      maxAge: 1000 * 60 * 60 * 24 // 24h session
+    },
+    resave: false,
+    saveUninitialized: true
+  }))
+
+} else {
+
+  // Use another kind of session storage in a real app
+  // database typically
+  app.use(session({
+    secret: 'forge-boiler',
+    cookie: {
+      secure: false,
+      maxAge: 1000 * 60 * 60 * 24 // 24h session
+    },
+    resave: false,
+    saveUninitialized: true
+  }))
+}
+
 app.use('/resources', express.static(__dirname + '/../../resources'))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
@@ -39,20 +69,59 @@ app.set('trust proxy', 1)
 app.use(cookieParser())
 app.use(helmet())
 
-/////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////
+// Services setup
+//
+///////////////////////////////////////////////////////////
+const derivativesSvc = new DerivativesSvc()
+
+const lmvProxySvc = new LMVProxySvc({
+  endpoint: config.forge.oauth.baseUri.replace(
+    'https://', '')
+})
+
+const forgeSvc = new ForgeSvc(
+  config.forge)
+
+const uploadSvc = new UploadSvc({
+  tempStorage: path.join(__dirname, '/../../TMP')
+})
+
+const extractorSvc = new ExtractorSvc()
+
+const ossSvc = new OssSvc()
+
+ServiceManager.registerService(derivativesSvc)
+ServiceManager.registerService(extractorSvc)
+ServiceManager.registerService(uploadSvc)
+ServiceManager.registerService(forgeSvc)
+ServiceManager.registerService(ossSvc)
+
+///////////////////////////////////////////////////////////
 // API Routes setup - Disabled except socket by default
 //
-/////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////
 //app.use('/api/derivatives', DerivativesAPI())
 app.use('/api/socket', SocketAPI())
-//app.use('/api/forge', ForgeAPI())
+app.use('/api/forge', ForgeAPI())
 //app.use('/api/oss', OssAPI())
+//app.use('/api/dm', DMAPI())
 
-/////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////
 // Viewer GET Proxy
 //
-/////////////////////////////////////////////////////////////////////
-app.get('/lmv-proxy/*', LMVProxy.get)
+///////////////////////////////////////////////////////////
+const proxy2legged = lmvProxySvc.generateProxy(
+  'lmv-proxy-2legged',
+  () => forgeSvc.get2LeggedToken())
+
+app.get('/lmv-proxy-2legged/*', proxy2legged)
+
+const proxy3legged = lmvProxySvc.generateProxy(
+  'lmv-proxy-3legged',
+  (session) => forgeSvc.get3LeggedToken(session))
+
+app.get('/lmv-proxy-3legged/*', proxy3legged)
 
 /////////////////////////////////////////////////////////////////////
 // This rewrites all routes requests to the root /index.html file
@@ -124,20 +193,10 @@ function runServer(app) {
         ' reason: ', reason)
     })
 
-    var derivativesSvc = new DerivativesSvc()
-
-    var forgeSvc = new ForgeSvc(config.forge)
-
-    var ossSvc = new OssSvc()
-
-    ServiceManager.registerService(derivativesSvc)
-    ServiceManager.registerService(forgeSvc)
-    ServiceManager.registerService(ossSvc)
-
-    var server = app.listen(
+    const server = app.listen(
       process.env.PORT || config.server_port || 3000, () => {
 
-        var socketSvc = new SocketSvc({
+        const socketSvc = new SocketSvc({
           session,
           server
         })

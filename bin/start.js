@@ -2,6 +2,7 @@ var path = require('path')
 var fs = require('fs')
 
 require('babel-core/register')({
+  plugins: ['transform-decorators-legacy'],
   presets: ['es2015-node5', 'stage-0']
 })
 
@@ -15,6 +16,12 @@ if (process.env.NODE_ENV !== 'development') {
       require('../webpack')
     }
   })
+
+  require('./server')
+
+} else {
+
+  require('../src/server')
 }
 
-require('../src/server')
+

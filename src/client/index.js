@@ -11,6 +11,7 @@ import ServiceManager from 'SvcManager'
 import StorageSvc from 'StorageSvc'
 import SocketSvc from 'SocketSvc'
 import EventSvc from 'EventSvc'
+import ForgeSvc from 'ForgeSvc'
 
 // ========================================================
 // Services Initialization
@@ -35,8 +36,10 @@ socketSvc.connect().then((socket) => {
   console.log(error)
 })
 
-const eventSvc = new EventSvc({
+const eventSvc = new EventSvc()
 
+const forgeSvc = new ForgeSvc({
+  apiUrl: '/api/forge'
 })
 
 // ========================================================
@@ -45,6 +48,7 @@ const eventSvc = new EventSvc({
 ServiceManager.registerService(storageSvc)
 ServiceManager.registerService(socketSvc)
 ServiceManager.registerService(eventSvc)
+ServiceManager.registerService(forgeSvc)
 
 // ========================================================
 // Store Instantiation
@@ -110,5 +114,3 @@ if (config.env === 'development') {
 // Go!
 // ========================================================
 render()
-
-

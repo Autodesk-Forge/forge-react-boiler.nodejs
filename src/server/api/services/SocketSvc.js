@@ -1,4 +1,5 @@
 
+import autobind from 'autobind-decorator'
 import BaseSvc from './BaseSvc'
 import io from 'socket.io'
 
@@ -13,12 +14,6 @@ export default class SocketSvc extends BaseSvc {
     super (config)
 
     this._connections = {}
-
-    this.handleConnection =
-      this.handleConnection.bind(this)
-
-    this.handleDisconnection =
-      this.handleDisconnection.bind(this)
 
     this._io = io(config.server)
 
@@ -40,9 +35,8 @@ export default class SocketSvc extends BaseSvc {
   // Socket Connection handler
   //
   ///////////////////////////////////////////////////////////////////
-  handleConnection(socket) {
-
-    //socket.handshake.session
+  @autobind
+  handleConnection (socket) {
 
     var _thisSvc = this
 
@@ -81,7 +75,8 @@ export default class SocketSvc extends BaseSvc {
   // Socket Disconnection handler
   //
   ///////////////////////////////////////////////////////////////////
-  handleDisconnection(id) {
+  @autobind
+  handleDisconnection (id) {
 
     var _thisSvc = this
 
@@ -102,11 +97,11 @@ export default class SocketSvc extends BaseSvc {
   // If null, broadcast to every connected socket
   //
   ///////////////////////////////////////////////////////////////////
-  broadcast(msgId, msg, filter = null) {
+  broadcast (msgId, msg, filter = null) {
 
     var _thisSvc = this
 
-    if(filter) {
+    if (filter) {
 
       filter = Array.isArray(filter) ? filter : [filter]
 
@@ -119,8 +114,8 @@ export default class SocketSvc extends BaseSvc {
           socket.emit(msgId, msg)
         }
       })
-    }
-    else {
+
+    } else {
 
       for(var socketId in _thisSvc._connections){
 

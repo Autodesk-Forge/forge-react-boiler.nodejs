@@ -6,6 +6,7 @@ import ServiceManager from 'SvcManager'
 export const SET_NAVBAR_STATE = 'SET_NAVBAR_STATE'
 export const SAVE_APP_STATE = 'SAVE_APP_STATE'
 export const SET_VIEWER_ENV = 'SET_VIEWER_ENV'
+export const SET_USER = 'SET_USER'
 
 // ------------------------------------
 // Actions
@@ -27,6 +28,13 @@ export function setViewerEnv (env) {
   return {
     type    : SET_VIEWER_ENV,
     payload : env
+  }
+}
+
+export function setUser (user) {
+  return {
+    type    : SET_USER,
+    payload : user
   }
 }
 
@@ -60,6 +68,13 @@ const ACTION_HANDLERS = {
     return Object.assign({}, state, {
       viewerEnv: action.payload
     })
+  },
+
+  [SET_USER] : (state, action) => {
+
+    return Object.assign({}, state, {
+      user: action.payload
+    })
   }
 }
 
@@ -73,10 +88,12 @@ const createInitialState = () => {
     navbar: {
       links:{
         about: true,
+        login: true,
         home: true
       }
     },
-    viewerEnv: null
+    viewerEnv: null,
+    user: null
   }
 
   const storageSvc = ServiceManager.getService(

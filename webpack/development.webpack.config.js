@@ -135,21 +135,23 @@ module.exports = {
 
   module: {
 
-    noParse: [/systemjs/],
-
     rules: [
 
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        use: [{
-          loader:'react-hot-loader'
-        }, {
-          loader: 'babel-loader',
-          options: {
-            presets: ['react', 'es2015', 'stage-0'],
-            plugins: ['transform-runtime']
-          }
+        use: [
+          {
+            loader:'react-hot-loader'
+          }, {
+            loader: 'babel-loader',
+            options: {
+              presets: ['react', 'es2015', 'stage-0'],
+              plugins: [
+                'transform-decorators-legacy',
+                'transform-runtime'
+              ]
+            }
         }]
       },
 

@@ -104,26 +104,9 @@ class ViewerView extends React.Component {
 
           this.props.setViewerEnv('AutodeskProduction')
 
-          if (Autodesk.Viewing.setApiEndpoint) {
-
-            //2.13
-            Autodesk.Viewing.setApiEndpoint(
-              window.location.origin + '/lmv-proxy')
-
-          } else if(Autodesk.Viewing.setEndpointAndApi) {
-
-            //2.14
-            Autodesk.Viewing.setEndpointAndApi(
-              window.location.origin + '/lmv-proxy',
-              'modelDerivativeV2')
-
-          } else {
-
-            const error = 'Proxy API not found. ' +
-              'Requires viewer version >= 2.13'
-
-            throw new Error(error)
-          }
+          Autodesk.Viewing.setEndpointAndApi(
+            window.location.origin + '/lmv-proxy-2legged',
+            'modelDerivativeV2')
 
           Autodesk.Viewing.Private.memoryOptimizedSvfLoading = true
 
