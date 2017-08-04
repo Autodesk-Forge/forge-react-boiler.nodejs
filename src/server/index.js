@@ -119,7 +119,7 @@ app.get('/lmv-proxy-2legged/*', proxy2legged)
 
 const proxy3legged = lmvProxySvc.generateProxy(
   'lmv-proxy-3legged',
-  (session) => forgeSvc.get3LeggedToken(session))
+  (session) => forgeSvc.get3LeggedTokenMaster(session))
 
 app.get('/lmv-proxy-3legged/*', proxy3legged)
 
