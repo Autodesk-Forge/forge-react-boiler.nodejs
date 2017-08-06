@@ -1,4 +1,5 @@
 node_modules
+bin/server
 .DS_STORE
 .idea
 *.log

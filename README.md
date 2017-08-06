@@ -44,9 +44,14 @@ based on the configuration type you want to run.
 In **development**, the client is dynamically built by the
 [webpack-dev-middleware](https://github.com/webpack/webpack-dev-middleware), so just run:
 
+
  * `npm install`    *(downloads project dependencies locally)*
 
- * `npm start`      *(builds client on the fly and run server)*
+ * `set NODE_ENV=development`
+
+ * `set HOT_RELOADING=true`
+
+ * `npm start`      *(builds client on the fly and runs server)*
 
  * open [http://localhost:3000](http://localhost:3000) in your favorite browser
 
@@ -57,7 +62,13 @@ In **production**, the client requires a build step, so run:
 
  * `npm install` *(not required if you already run at previous step)*
 
- * `npm run build-prod && npm start` *(builds client and run server)*
+ * `set NODE_ENV=production`
+
+ * `npm run build-server` *(builds server in /bin/server)*
+
+ * `npm run build-prod` *(builds client in /dist)*
+
+ * `npm start` *(runs server)*
 
  * open [http://localhost:3000](http://localhost:3000) in your favorite browser
 

@@ -200,6 +200,14 @@ module.exports = {
         removeComments: true,
         minifyCSS: true
       },
+      viewport: [
+        'height=device-height',
+        'width=device-width',
+        'minimum-scale=1.0',
+        'user-scalable=no',
+        'initial-scale=1',
+        'minimal-ui'
+      ].join(','),
       inject: 'body'
     }),
 
@@ -213,6 +221,7 @@ module.exports = {
   // directories used by webpack to resolve dependencies
   resolve: {
     modules: [
+      path.resolve('./src/client/components/Viewer.Components'),
       path.resolve('./src/client/components'),
       path.resolve('./src/client/services'),
       path.resolve('./src/client/styles'),

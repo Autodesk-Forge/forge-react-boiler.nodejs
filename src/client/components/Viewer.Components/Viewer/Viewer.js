@@ -25,9 +25,27 @@ class Viewer extends React.Component {
 
     super()
 
+    this.loadDynamicExtension =
+      this.loadDynamicExtension.bind(this)
+
     this.height = 0
 
     this.width = 0
+  }
+
+  ///////////////////////////////////////////////////////////////////
+  //
+  //
+  ///////////////////////////////////////////////////////////////////
+  async loadDynamicExtension (extensionId, options = {}) {
+
+    await System.import(`../Extensions/Dynamic/${extensionId}/index.js`)
+
+    const extInstance =
+      await this.viewer.loadExtension(
+        extensionId, options)
+
+    return extInstance
   }
 
   ///////////////////////////////////////////////////////////////////
@@ -39,6 +57,9 @@ class Viewer extends React.Component {
 
     this.viewer = new Autodesk.Viewing.Private.GuiViewer3D(
       this.viewerContainer)
+
+    this.viewer.loadDynamicExtension =
+      this.loadDynamicExtension
 
     if (this.props.onViewerCreated) {
 

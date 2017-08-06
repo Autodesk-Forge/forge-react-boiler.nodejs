@@ -90,7 +90,8 @@ class ViewerView extends React.Component {
 
       try {
 
-        let { id, urn, path, pathIdx } = this.props.location.query
+        let { id, extIds, urn, path, pathIdx } =
+          this.props.location.query
 
         // check if env is initialized
         // initializer cannot be invoked more than once
@@ -137,7 +138,18 @@ class ViewerView extends React.Component {
 
         viewer.start()
 
+        if (extIds) {
+
+          const extensionIds = extIds.split(';')
+
+          for (let extensionId of extensionIds) {
+
+            viewer.loadDynamicExtension(extensionId)
+          }
+        }
+
         viewer.loadModel(path)
+
 
       } catch (ex) {
 

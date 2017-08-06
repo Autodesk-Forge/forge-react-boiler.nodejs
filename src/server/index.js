@@ -1,3 +1,6 @@
+// async support
+import 'babel-polyfill'
+
 //Server stuff
 import cookieParser from 'cookie-parser'
 import compression from 'compression'
@@ -135,7 +138,7 @@ app.use(require('connect-history-api-fallback')())
 // Static routes
 //
 /////////////////////////////////////////////////////////////////////
-if (process.env.NODE_ENV === 'development') {
+if (process.env.HOT_RELOADING) {
 
   // dynamically require webpack dependencies
   // to them in devDependencies (package.json)

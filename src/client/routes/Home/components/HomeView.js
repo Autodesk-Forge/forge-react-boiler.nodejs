@@ -18,6 +18,12 @@ class HomeView extends React.Component {
           path: 'resources/models/seat/seat.svf',
           thumbnailClass: 'seat-thumbnail',
           name: 'Seat'
+        },
+        {
+          extensions: ['Viewing.Extension.Demo'],
+          path: 'resources/models/seat/seat.svf',
+          thumbnailClass: 'seat-thumbnail',
+          name: 'Seat + Extension'
         }
       ]
     }
@@ -39,8 +45,16 @@ class HomeView extends React.Component {
           <div className="content responsive-grid">
             {
               this.state.models.map((model, idx) => {
+
+                let query = `path=${model.path}`
+
+                if (model.extensions) {
+
+                  query += '&extIds=' + model.extensions.join(';')
+                }
+
                 return (
-                  <Link key={idx} to={`/viewer?path=${model.path}`}>
+                  <Link key={idx} to={`/viewer?${query}`}>
                     <figure>
                       <figcaption>
                         {model.name}

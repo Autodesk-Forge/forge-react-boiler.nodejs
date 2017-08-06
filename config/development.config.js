@@ -3,8 +3,8 @@
 // DEVELOPMENT configuration
 //
 /////////////////////////////////////////////////////////////////////
-const HOST_URL = 'http://localhost'
-const PORT= 3000
+const HOST_URL = process.env.HOST_URL ||  'http://localhost'
+const PORT = process.env.PORT || 3000
 
 const config = {
 

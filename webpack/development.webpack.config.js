@@ -108,6 +108,14 @@ module.exports = {
       template: path.resolve(__dirname, '../src/client/layouts/index.ejs'),
       title: 'Forge | Boiler | DEV',
       filename: 'index.html',
+      viewport: [
+        'height=device-height',
+        'width=device-width',
+        'minimum-scale=1.0',
+        'user-scalable=no',
+        'initial-scale=1',
+        'minimal-ui'
+      ].join(','),
       minify: false,
       inject: 'body'
     }),
@@ -120,6 +128,7 @@ module.exports = {
 
   resolve: {
     modules: [
+      path.resolve('./src/client/components/Viewer.Components'),
       path.resolve('./src/client/components'),
       path.resolve('./src/client/services'),
       path.resolve('./src/client/styles'),

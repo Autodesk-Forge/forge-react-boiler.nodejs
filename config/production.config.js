@@ -3,8 +3,8 @@
 // DEVELOPMENT configuration
 //
 /////////////////////////////////////////////////////////////////////
-const HOST_URL = 'https://forge-react-boiler.autodesk.io'
-const PORT = 443
+const HOST_URL = process.env.HOST_URL || 'https://forge-react-boiler.autodesk.io'
+const PORT = process.env.PORT || 443
 
 const config = {
 
