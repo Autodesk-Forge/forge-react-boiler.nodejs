@@ -6,6 +6,7 @@
     "build-server": "babel --presets es2015,stage-0 --plugins transform-decorators-legacy ./src/server -d ./bin/server",
     "build-prod": "cross-env NODE_ENV=production npm run build",
     "build": "npm run clean && node webpack",
+    "postinstall": "npm run build-server",
     "start": "node bin/start.js",
     "clean": "rimraf dist"
   },
