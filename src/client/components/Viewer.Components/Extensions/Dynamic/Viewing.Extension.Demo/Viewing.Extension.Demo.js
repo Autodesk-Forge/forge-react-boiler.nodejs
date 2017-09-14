@@ -17,12 +17,15 @@ export default class DemoExtension
       219, 219, 219)
 
     console.log (`${ExtensionId} loaded`)
-  }
 
+    return true
+  }
 
   unload () {
 
     console.log (`${ExtensionId} unloaded`)
+
+    return true
   }
 }
 
