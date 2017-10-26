@@ -105,7 +105,7 @@ class ViewerView extends React.Component {
 
           this.props.setViewerEnv('AutodeskProduction')
 
-          Autodesk.Viewing.setEndpointAndApi(
+          Autodesk.Viewing.endpoint.setEndpointAndApi(
             window.location.origin + '/lmv-proxy-2legged',
             'modelDerivativeV2')
 
