@@ -1,10 +1,17 @@
-![banner](./resources/img/banner.png)
+
+[![OAuth2](https://img.shields.io/badge/OAuth2-v1-green.svg)](http://developer.autodesk.com/)
+[![Data-Management](https://img.shields.io/badge/Data%20Management-v2-green.svg)](http://developer.autodesk.com/)
+[![Model-Derivative](https://img.shields.io/badge/Model%20Derivative-v2-green.svg)](http://developer.autodesk.com/)
+[![Viewer](https://img.shields.io/badge/Viewer-v2.17-green.svg)](http://developer.autodesk.com/)
 
 # About Forge React Boiler
 
 A boilerplate project to quickly get started using [Autodesk Forge Platform](https://forge.autodesk.com/)
 Web Services in a modern React + Node.js Web Application.
 The base project is initially derived from the [React Redux Starter Kit](https://github.com/davezuko/react-redux-starter-kit).
+
+### Thumbnail
+![thumbnail](resources/img/BR_thumbnail.png)
 
  * Main components of the Frontend:
 
