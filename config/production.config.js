@@ -43,9 +43,9 @@ const config = {
     },
 
     viewer: {
-      viewer3D: 'https://developer.api.autodesk.com/derivativeservice/v2/viewers/viewer3D.js?v=v3.1.*',
-      threeJS:  'https://developer.api.autodesk.com/derivativeservice/v2/viewers/three.js?v=v3.1.*',
-      style:    'https://developer.api.autodesk.com/derivativeservice/v2/viewers/style.css?v=v3.1.*'
+      viewer3D: 'https://developer.api.autodesk.com/derivativeservice/v2/viewers/viewer3D.min.js?v=3.3',
+      threeJS:  'https://developer.api.autodesk.com/derivativeservice/v2/viewers/three.min.js?v=3.3',
+      style:    'https://developer.api.autodesk.com/derivativeservice/v2/viewers/style.css?v=3.3'
     }
   }
 }
