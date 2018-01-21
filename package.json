@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "description": "React+ Node.js Boilerplate project for Autodesk Forge Platform Web Services",
   "scripts": {
-    "build-server": "babel --presets es2015,stage-0 --plugins transform-decorators-legacy ./src/server -d ./bin/server",
+    "build-server": "babel --presets env,stage-0 --plugins transform-decorators-legacy ./src/server -d ./bin/server",
     "build-prod": "cross-env NODE_ENV=production npm run build",
     "build": "npm run clean && node webpack",
     "postinstall": "npm run build-server",
