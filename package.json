@@ -19,6 +19,9 @@
     "node.js",
     "express"
   ],
+  "engines": {
+    "node": ">= v8.9.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Autodesk-Forge/forge-react-boiler.nodejs.git"
