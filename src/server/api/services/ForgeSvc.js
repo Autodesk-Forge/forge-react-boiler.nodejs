@@ -47,7 +47,7 @@ export default class ForgeSvc extends BaseSvc {
 
           const memoId = {
             refreshToken: args[0].forge.refreshToken,
-            socketId: args[0].socketId
+            sessionId: args[0].id
           }
 
           return JSON.stringify(JSON.stringify(memoId))

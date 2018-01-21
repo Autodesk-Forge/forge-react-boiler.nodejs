@@ -112,7 +112,7 @@ module.exports = function() {
 
     } catch (ex) {
 
-      res.status(ex.status || 500)
+      res.status(ex.status || 404)
       res.json(ex)
     }
   })
@@ -194,6 +194,7 @@ module.exports = function() {
           req.session, 'viewables:read')
 
       res.json({
+        
         expires_in: forgeSvc.getExpiry(token),
         access_token: token.access_token,
         scope: token.scope
