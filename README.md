@@ -11,7 +11,7 @@ Web Services in a modern React + Node.js Web Application.
 The base project is initially derived from the [React Redux Starter Kit](https://github.com/davezuko/react-redux-starter-kit).
 
 ### Thumbnail
-![thumbnail](resources/img/BR_thumbnail.png)
+![thumbnail](/thumbnail.png)
 
  * Main components of the Frontend:
 
